@@ -1,27 +1,47 @@
+#[derive(Debug, Clone, Copy)]
+struct Pin {
+    value: u8,
+    state: PinConnectionState,
+}
 
-#[derive(Debug,Clone, Copy)]
-struct Pin(u8);
+#[derive(Debug, Clone, Copy)]
+enum PinConnectionState {
+    Connected,
+    NotConnected,
+}
 
 impl Pin {
-    const HIGH : u8 = 1;
-    const LOW : u8 = 0;
+    const HIGH: u8 = 1;
+    const LOW: u8 = 0;
 
-    fn high() -> Self {
-        Pin(Pin::HIGH)
+    fn new_disconected() -> Self {
+        Pin {
+            value: Pin::HIGH,
+            state: PinConnectionState::NotConnected,
+        }
+    }
+    fn connect_high() -> Self {
+        Pin {
+            value: Pin::HIGH,
+            state: PinConnectionState::Connected,
+        }
     }
 
-    fn low() -> Self {
-        Pin(Pin::LOW)
+    fn connect_low() -> Self {
+        Pin {
+            value: Pin::LOW,
+            state: PinConnectionState::Connected,
+        }
     }
 
     fn get_value(&self) -> u8 {
-        self.0
+        self.value
     }
 }
 
 impl PartialEq<u8> for Pin {
     fn eq(&self, other: &u8) -> bool {
-        self.0 == *other
+        self.value == *other
     }
 }
 struct AndGate {
@@ -31,21 +51,16 @@ struct AndGate {
 }
 
 impl AndGate {
-    fn new(in1: Pin, in2: Pin) -> Self {
-        let mut out:Pin = Pin(0);
-        if in1 == Pin::HIGH && in2 == Pin::HIGH {
-            out = Pin(Pin::HIGH);
-        } else {
-            out = Pin(Pin::HIGH);
-        }
+    fn new() -> Self {
         AndGate {
-            input1: in1,
-            input2: in2,
-            output : out,
+            input1: Pin::new_disconected(),
+            input2: Pin::new_disconected(),
+            output: Pin::new_disconected(),
         }
     }
 
-   // fn chain (&self, rhs: Self) -> Self{
+    fn connect(p: Pin, other: Pin) {}
+    // fn chain (&self, rhs: Self) -> Self{
 
     //}
 }
@@ -57,7 +72,10 @@ struct OrGate {
 }
 
 fn main() {
-    let gate1 = AndGate::new(Pin(Pin::HIGH), Pin(Pin::LOW));
-    let gate2 = AndGate::new(Pin::high(), Pin::low());
-    println!("Output value is : {} and {} ",gate1.output.get_value(), gate2.output.get_value());
+    let gate1 = AndGate::new();
+
+    println!(
+        "Output value is : {} ",
+        gate1.output.get_value(),
+    );
 }
