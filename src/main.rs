@@ -1,81 +1,23 @@
-#[derive(Debug, Clone, Copy)]
-struct Pin {
-    value: u8,
-    state: PinConnectionState,
+use gates::{AndGate,OutputResult};
+
+fn main() {}
+
+#[test]
+fn and_output() {
+    let mut gate1 = AndGate::new(3);
+    gate1.input_pins.get_mut(0).unwrap().set_low();
+    gate1.input_pins.get_mut(1).unwrap().set_high();
+    gate1.input_pins.get_mut(2).unwrap().set_high();
+
+    assert_eq!(0, gate1.calculate().get_u8_result());
 }
 
-#[derive(Debug, Clone, Copy)]
-enum PinConnectionState {
-    Connected,
-    NotConnected,
-}
-
-impl Pin {
-    const HIGH: u8 = 1;
-    const LOW: u8 = 0;
-
-    fn new_disconected() -> Self {
-        Pin {
-            value: Pin::HIGH,
-            state: PinConnectionState::NotConnected,
-        }
-    }
-    fn connect_high() -> Self {
-        Pin {
-            value: Pin::HIGH,
-            state: PinConnectionState::Connected,
-        }
-    }
-
-    fn connect_low() -> Self {
-        Pin {
-            value: Pin::LOW,
-            state: PinConnectionState::Connected,
-        }
-    }
-
-    fn get_value(&self) -> u8 {
-        self.value
-    }
-}
-
-impl PartialEq<u8> for Pin {
-    fn eq(&self, other: &u8) -> bool {
-        self.value == *other
-    }
-}
-struct AndGate {
-    input1: Pin,
-    input2: Pin,
-    output: Pin,
-}
-
-impl AndGate {
-    fn new() -> Self {
-        AndGate {
-            input1: Pin::new_disconected(),
-            input2: Pin::new_disconected(),
-            output: Pin::new_disconected(),
-        }
-    }
-
-    fn connect(p: Pin, other: Pin) {}
-    // fn chain (&self, rhs: Self) -> Self{
-
-    //}
-}
-
-struct OrGate {
-    input1: u8,
-    input2: u8,
-    output: u8,
-}
-
-fn main() {
-    let gate1 = AndGate::new();
-
-    println!(
-        "Output value is : {} ",
-        gate1.output.get_value(),
-    );
+#[test]
+fn and_output2() {
+    let mut gate2 = AndGate::new(3);
+    gate2.input_pins.get_mut(0).unwrap().set_high();
+    gate2.input_pins.get_mut(1).unwrap().set_high();
+    gate2.input_pins.get_mut(2).unwrap().set_high();
+    let gate2_output = gate2.calculate();
+    assert_eq!(1, gate2_output.get_u8_result());
 }
