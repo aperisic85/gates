@@ -29,7 +29,7 @@ impl Pin {
 
     pub fn new_disconected() -> Self {
         Pin {
-            value: Pin::HIGH,
+            value: Pin::LOW,
             state: PinConnectionState::NotConnected,
         }
     }
