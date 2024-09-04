@@ -1,33 +1,14 @@
 #[derive(Debug, Clone, Copy)]
+
 pub struct Pin {
     value: u8,
     state: PinConnectionState,
 }
-
-#[derive(Debug, Clone, Copy)]
-pub struct Output(Pin);
-
-impl Output {
-    pub fn get_u8_result(&self) -> u8 {
-        self.0.get_value()
-    }
-}
-
-#[derive(Debug, Clone, Copy)]
-enum PinConnectionState {
-    Connected,
-    NotConnected,
-}
-
-pub trait OutputResult {
-    fn calculate(self) -> Output;
-}
-
 impl Pin {
     pub const HIGH: u8 = 1;
     pub const LOW: u8 = 0;
 
-    pub fn new_disconected() -> Self {
+    pub fn new() -> Self {
         Pin {
             value: Pin::LOW,
             state: PinConnectionState::NotConnected,
@@ -51,6 +32,26 @@ impl PartialEq<u8> for Pin {
         self.value == *other
     }
 }
+#[derive(Debug, Clone, Copy)]
+pub struct Output(Pin);
+
+impl Output {
+    pub fn get_u8_result(&self) -> u8 {
+        self.0.get_value()
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+enum PinConnectionState {
+    Connected,
+    NotConnected,
+}
+
+pub trait OutputResult {
+    fn calculate(self) -> Output;
+}
+
+
 pub struct AndGateElementary {
     input1: Pin,
     input2: Pin,
@@ -60,9 +61,9 @@ pub struct AndGateElementary {
 impl AndGateElementary {
     pub fn new() -> Self {
         AndGateElementary {
-            input1: Pin::new_disconected(),
-            input2: Pin::new_disconected(),
-            output: Pin::new_disconected(),
+            input1: Pin::new(),
+            input2: Pin::new(),
+            output: Pin::new(),
         }
     }
 }
@@ -82,12 +83,12 @@ impl XOrGate {
     pub fn new(no_of_input: u8) -> Self {
         let mut pin_vec: Vec<Pin> = Vec::new();
         for _ in 0..no_of_input {
-            pin_vec.push(Pin::new_disconected());
+            pin_vec.push(Pin::new());
         }
         XOrGate {
             no_of_inputs: no_of_input,
             input_pins: pin_vec,
-            output: Pin::new_disconected(),
+            output: Pin::new(),
         }
     }
 }
@@ -101,7 +102,7 @@ impl OutputResult for XOrGate {
                 init_val,
                 |acc, num| acc ^ num.get_value(),
             );
-        let mut output_pin = Pin::new_disconected();
+        let mut output_pin = Pin::new();
         if result == 1 {
             output_pin.set_high();
         } else {
@@ -121,12 +122,12 @@ impl AndGate {
     pub fn new(no_of_input: u8) -> Self {
         let mut pin_vec: Vec<Pin> = Vec::new();
         for _ in 0..no_of_input {
-            pin_vec.push(Pin::new_disconected());
+            pin_vec.push(Pin::new());
         }
         AndGate {
             no_of_inputs: no_of_input,
             input_pins: pin_vec,
-            output: Pin::new_disconected(),
+            output: Pin::new(),
         }
     }
 }
@@ -138,7 +139,7 @@ impl OutputResult for AndGate {
                 1,
                 |acc, num| acc & num.get_value(),
             );
-        let mut output_pin = Pin::new_disconected();
+        let mut output_pin = Pin::new();
         if result == 1 {
             output_pin.set_high();
         } else {
