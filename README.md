@@ -1,1 +1,1 @@
-Logic gates implemntation
+Logic gates implementation
