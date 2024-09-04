@@ -1,5 +1,9 @@
-#[derive(Debug, Clone, Copy)]
+pub trait Gate {
+    fn new(no_inputs: u8) -> Self;
+    fn calculate_output(self) -> Output;
+}
 
+#[derive(Debug, Clone, Copy)]
 pub struct Pin {
     value: u8,
     state: PinConnectionState,
@@ -47,11 +51,6 @@ enum PinConnectionState {
     NotConnected,
 }
 
-pub trait OutputResult {
-    fn calculate(self) -> Output;
-}
-
-
 pub struct AndGateElementary {
     input1: Pin,
     input2: Pin,
@@ -79,8 +78,8 @@ pub struct XOrGate {
     pub output: Pin,
 }
 
-impl XOrGate {
-    pub fn new(no_of_input: u8) -> Self {
+impl Gate for XOrGate {
+    fn new(no_of_input: u8) -> Self {
         let mut pin_vec: Vec<Pin> = Vec::new();
         for _ in 0..no_of_input {
             pin_vec.push(Pin::new());
@@ -91,17 +90,14 @@ impl XOrGate {
             output: Pin::new(),
         }
     }
-}
 
-
-impl OutputResult for XOrGate {
-    fn calculate(self) -> Output {
-        let init_val  = self.input_pins.get(0).unwrap().get_value();
-        let result =
-            self.input_pins.iter().skip(1).fold( //skip first element because its value is init value of acc
-                init_val,
-                |acc, num| acc ^ num.get_value(),
-            );
+    fn calculate_output(self) -> Output {
+        let init_val = self.input_pins.get(0).unwrap().get_value();
+        let result = self.input_pins.iter().skip(1).fold(
+            //skip first element because its value is init value of acc
+            init_val,
+            |acc, num| acc ^ num.get_value(),
+        );
         let mut output_pin = Pin::new();
         if result == 1 {
             output_pin.set_high();
@@ -118,8 +114,8 @@ pub struct AndGate {
     pub output: Pin,
 }
 
-impl AndGate {
-    pub fn new(no_of_input: u8) -> Self {
+impl Gate for AndGate {
+    fn new(no_of_input: u8) -> Self {
         let mut pin_vec: Vec<Pin> = Vec::new();
         for _ in 0..no_of_input {
             pin_vec.push(Pin::new());
@@ -130,15 +126,11 @@ impl AndGate {
             output: Pin::new(),
         }
     }
-}
-
-impl OutputResult for AndGate {
-    fn calculate(self) -> Output {
-        let result =
-            self.input_pins.iter().fold(
-                1,
-                |acc, num| acc & num.get_value(),
-            );
+    fn calculate_output(self) -> Output {
+        let result = self
+            .input_pins
+            .iter()
+            .fold(1, |acc, num| acc & num.get_value());
         let mut output_pin = Pin::new();
         if result == 1 {
             output_pin.set_high();
