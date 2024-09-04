@@ -1,5 +1,6 @@
-use gates::{AndGate, Gate, XOrGate};
-
+use gates::gate::*;
+use gates::and_gate::AndGate;
+use gates::xor_gate::XOrGate;
 fn main() {}
 
 #[test]
@@ -18,8 +19,8 @@ fn and_gate_output2() {
     gate2.input_pins.get_mut(0).unwrap().set_high();
     gate2.input_pins.get_mut(1).unwrap().set_high();
     gate2.input_pins.get_mut(2).unwrap().set_high();
-    let gate2_output = gate2.calculate_output();
-    assert_eq!(1, gate2_output.get_u8_result());
+    
+    assert_eq!(1, gate2.calculate_output().get_u8_result());
 }
 
 #[test]
@@ -28,6 +29,7 @@ fn xor_gate_output() {
     xorgate.input_pins.get_mut(0).unwrap().set_high();
     xorgate.input_pins.get_mut(1).unwrap().set_low();
     xorgate.input_pins.get_mut(2).unwrap().set_high();
+    
     assert_eq!(0, xorgate.calculate_output().get_u8_result());
 }
 #[test]
@@ -36,5 +38,6 @@ fn xor_gate_output2() {
     xorgate.input_pins.get_mut(0).unwrap().set_low();
     xorgate.input_pins.get_mut(1).unwrap().set_high();
     xorgate.input_pins.get_mut(2).unwrap().set_low();
+    
     assert_eq!(1, xorgate.calculate_output().get_u8_result());
 }
