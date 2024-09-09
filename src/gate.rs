@@ -1,5 +1,7 @@
 pub trait Gate {
-    fn new(no_inputs: u8) -> Self;
+    fn new(no_inputs: u8) -> Result<Self, String>
+    where
+        Self: Sized;
     fn calculate_output(self) -> Output;
 }
 

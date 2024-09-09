@@ -1,4 +1,4 @@
-use crate::gate::{Gate,Pin,Output};
+use crate::gate::{Gate, Output, Pin};
 
 pub struct AndGate {
     pub no_of_inputs: u8,
@@ -7,15 +7,20 @@ pub struct AndGate {
 }
 
 impl Gate for AndGate {
-    fn new(no_of_input: u8) -> Self {
-        let mut pin_vec: Vec<Pin> = Vec::new();
-        for _ in 0..no_of_input {
-            pin_vec.push(Pin::new());
-        }
-        AndGate {
-            no_of_inputs: no_of_input,
-            input_pins: pin_vec,
-            output: Pin::new(),
+    fn new(no_of_input: u8) -> Result<Self, String> {
+        if no_of_input <= 2 {
+            Err("Number of inputs must be greater than 0".to_string())
+        } else {
+            let mut pin_vec: Vec<Pin> = Vec::new();
+            for _ in 0..no_of_input {
+                pin_vec.push(Pin::new());
+            }
+
+            Ok(AndGate {
+                no_of_inputs: no_of_input,
+                input_pins: pin_vec,
+                output: Pin::new(),
+            })
         }
     }
     fn calculate_output(self) -> Output {

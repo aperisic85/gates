@@ -1,4 +1,4 @@
-use crate::gate::{Gate,Pin,Output};
+use crate::gate::{Gate, Output, Pin};
 pub struct XOrGate {
     pub no_of_inputs: u8,
     pub input_pins: Vec<Pin>,
@@ -6,15 +6,20 @@ pub struct XOrGate {
 }
 
 impl Gate for XOrGate {
-    fn new(no_of_input: u8) -> Self {
-        let mut pin_vec: Vec<Pin> = Vec::new();
-        for _ in 0..no_of_input {
-            pin_vec.push(Pin::new());
-        }
-        XOrGate {
-            no_of_inputs: no_of_input,
-            input_pins: pin_vec,
-            output: Pin::new(),
+    fn new(no_of_input: u8) -> Result<Self, String> {
+        if no_of_input < 2 {
+            Err("Number of inputs must be greater than 1".to_string())
+        } else {
+            let mut pin_vec: Vec<Pin> = Vec::new();
+            for _ in 0..no_of_input {
+                pin_vec.push(Pin::new());
+            }
+
+            Ok(XOrGate {
+                no_of_inputs: no_of_input,
+                input_pins: pin_vec,
+                output: Pin::new(),
+            })
         }
     }
 
@@ -34,4 +39,3 @@ impl Gate for XOrGate {
         Output(output_pin)
     }
 }
-

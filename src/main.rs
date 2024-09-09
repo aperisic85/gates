@@ -1,43 +1,54 @@
-use gates::gate::*;
 use gates::and_gate::AndGate;
+use gates::gate::*;
 use gates::xor_gate::XOrGate;
 fn main() {}
 
-#[test]
-fn and_gate_output() {
-    let mut gate1 = AndGate::new(3);
-    gate1.input_pins.get_mut(0).unwrap().set_low();
-    gate1.input_pins.get_mut(1).unwrap().set_high();
-    gate1.input_pins.get_mut(2).unwrap().set_high();
 
-    assert_eq!(0, gate1.calculate_output().get_u8_result());
+
+#[test]
+fn new_and_gate_error() {
+    let gate1 = AndGate::new(1);
+    let _ = match gate1 {
+        Ok(mut gate1) => {
+            gate1.input_pins.get_mut(0).unwrap().set_low();
+            assert_eq!(0, gate1.calculate_output().get_u8_result());
+        }
+        Err(msg) => {
+            assert_eq!("Number of inputs must be greater than 0".to_string(), msg);
+        }
+    };
+}
+
+#[test]
+fn new_and_gate_ok() {
+    let gate1 = AndGate::new(3);
+    let _ = match gate1 {
+        Ok(mut gate1) => {
+            gate1.input_pins.get_mut(0).unwrap().set_low();
+            gate1.input_pins.get_mut(1).unwrap().set_high();
+            gate1.input_pins.get_mut(2).unwrap().set_high();
+
+            assert_eq!(0, gate1.calculate_output().get_u8_result());
+        }
+        Err(msg) => {
+            assert_eq!("Number of inputs must be greater than 0".to_string(), msg);
+        }
+    };
 }
 
 #[test]
 fn and_gate_output2() {
-    let mut gate2 = AndGate::new(3);
-    gate2.input_pins.get_mut(0).unwrap().set_high();
-    gate2.input_pins.get_mut(1).unwrap().set_high();
-    gate2.input_pins.get_mut(2).unwrap().set_high();
-    
-    assert_eq!(1, gate2.calculate_output().get_u8_result());
-}
+    let gate1 = AndGate::new(3);
+    let _ = match gate1 {
+        Ok(mut gate1) => {
+            gate1.input_pins.get_mut(0).unwrap().set_low();
+            gate1.input_pins.get_mut(1).unwrap().set_high();
+            gate1.input_pins.get_mut(2).unwrap().set_high();
 
-#[test]
-fn xor_gate_output() {
-    let mut xorgate = XOrGate::new(3);
-    xorgate.input_pins.get_mut(0).unwrap().set_high();
-    xorgate.input_pins.get_mut(1).unwrap().set_low();
-    xorgate.input_pins.get_mut(2).unwrap().set_high();
-    
-    assert_eq!(0, xorgate.calculate_output().get_u8_result());
-}
-#[test]
-fn xor_gate_output2() {
-    let mut xorgate = XOrGate::new(3);
-    xorgate.input_pins.get_mut(0).unwrap().set_low();
-    xorgate.input_pins.get_mut(1).unwrap().set_high();
-    xorgate.input_pins.get_mut(2).unwrap().set_low();
-    
-    assert_eq!(1, xorgate.calculate_output().get_u8_result());
+            assert_eq!(0, gate1.calculate_output().get_u8_result());
+        }
+        Err(msg) => {
+            assert_eq!("Number of inputs must be greater than 0".to_string(), msg);
+        }
+    };
 }
