@@ -24,12 +24,13 @@ impl Gate for AndGate {
         }
     }
     fn calculate_output(self) -> Output {
-        let result = self
-            .input_pins
-            .iter()
-            .fold(1, |acc, num| acc & num.get_value());
+        /* let result = self
+        .input_pins
+        .iter()
+        .fold(1, |acc, num| acc & num.get_value()); */
+        let result = self.input_pins.iter().all(|x| x.get_value() == 1);
         let mut output_pin = Pin::new();
-        if result == 1 {
+        if result {
             output_pin.set_high();
         } else {
             output_pin.set_low();
