@@ -1,5 +1,3 @@
-
-
 use crate::gate::{Gate, Output, Pin};
 
 pub struct AndGate {
@@ -10,15 +8,14 @@ pub struct AndGate {
 
 impl Gate for AndGate {
     fn new(no_of_input: u8) -> Result<Self, String> {
-        if no_of_input <=2 {
+        if no_of_input <= 2 {
             Err("Number of inputs must be greater than 0".to_string())
-        }
-        else {
+        } else {
             let mut pin_vec: Vec<Pin> = Vec::new();
             for _ in 0..no_of_input {
                 pin_vec.push(Pin::new());
             }
-        
+
             Ok(AndGate {
                 no_of_inputs: no_of_input,
                 input_pins: pin_vec,

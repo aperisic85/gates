@@ -9,13 +9,12 @@ impl Gate for XOrGate {
     fn new(no_of_input: u8) -> Result<Self, String> {
         if no_of_input < 2 {
             Err("Number of inputs must be greater than 1".to_string())
-        }
-        else {
+        } else {
             let mut pin_vec: Vec<Pin> = Vec::new();
             for _ in 0..no_of_input {
                 pin_vec.push(Pin::new());
             }
-        
+
             Ok(XOrGate {
                 no_of_inputs: no_of_input,
                 input_pins: pin_vec,
