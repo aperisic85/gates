@@ -3,8 +3,6 @@ use gates::gate::*;
 use gates::xor_gate::XOrGate;
 fn main() {}
 
-
-
 #[test]
 fn new_and_gate_error() {
     let gate1 = AndGate::new(1);
